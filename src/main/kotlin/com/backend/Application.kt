@@ -24,4 +24,6 @@ fun Application.module() {
     configureSecurity(tokenConfig)
     configureSerialization()
     configureRouting(userController)
+
+
 }
