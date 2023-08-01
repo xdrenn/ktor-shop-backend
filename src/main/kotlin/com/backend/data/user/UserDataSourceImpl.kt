@@ -9,8 +9,6 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 
 class UserDataSourceImpl : UserDataSource {
-
-
     override suspend fun getUserByLogin(login: String): ServerResponse<UserDTO> {
         val result = dbQuery {
             UserTable.select(UserTable.login eq login).singleOrNull()
