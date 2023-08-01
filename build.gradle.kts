@@ -2,6 +2,7 @@ val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
 val exposed_version: String by project
+val kodein_version: String by project
 
 plugins {
     kotlin("jvm") version "1.9.0"
@@ -43,4 +44,6 @@ dependencies {
     implementation("org.postgresql:postgresql:42.2.27")
     implementation("io.ktor:ktor-server-auth-jvm:2.3.2")
     implementation("io.ktor:ktor-server-auth-jwt-jvm:2.3.2")
+
+    implementation("org.kodein.di:kodein-di-generic-jvm:$kodein_version")
 }
