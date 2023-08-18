@@ -1,7 +1,7 @@
-package com.backend.domain.usecases
+package com.backend.domain.usecases.user
 
-import com.backend.data.user.UserDTO
-import com.backend.data.user.UserDataSource
+import com.backend.data.users.UserDTO
+import com.backend.data.users.UserDataSource
 import com.backend.utils.ServerResponse
 import io.ktor.http.*
 

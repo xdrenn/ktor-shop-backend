@@ -1,5 +1,6 @@
 package com.backend.plugins
 
+import com.backend.controller.ClothesController
 import com.backend.controller.UserController
 
 import io.ktor.http.*
@@ -10,25 +11,24 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 
 fun Application.configureRouting(
-    userController: UserController
+    userController: UserController,
+    clothesController: ClothesController
 ) {
     routing {
         route("users") {
             post("register") { userController.register(this.context) }
             post("login") { userController.login(this.context) }
         }
-
-        authenticate {
-            get("authenticate") {
-                call.respond(HttpStatusCode.OK)
-            }
+        authenticate{
+            get("clothes") {clothesController.getClothes(this.context)}
+            post("clothes/post") {clothesController.postClothes(this.context)}
         }
 
         authenticate {
-            get("secret") {
+            get("authenticate") {
                 val principal = call.principal<JWTPrincipal>()
-                val userId = principal?.getClaim("userId", String::class)
-                call.respond(HttpStatusCode.OK, "Your userId is $userId")
+                principal?.getClaim("userId", String::class)
+                call.respond(HttpStatusCode.OK)
             }
         }
     }

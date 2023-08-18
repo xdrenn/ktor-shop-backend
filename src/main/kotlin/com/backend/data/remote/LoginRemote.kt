@@ -1,6 +1,6 @@
 package com.backend.data.remote
 
-import com.backend.data.user.UserDTO
+import com.backend.data.users.UserDTO
 import kotlinx.serialization.Serializable
 
 @Serializable

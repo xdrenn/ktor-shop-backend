@@ -1,4 +1,4 @@
-package com.backend.data.user
+package com.backend.data.users
 
 import kotlinx.serialization.Serializable
 

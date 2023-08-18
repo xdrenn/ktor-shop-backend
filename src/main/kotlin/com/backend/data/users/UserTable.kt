@@ -1,4 +1,4 @@
-package com.backend.data.user
+package com.backend.data.users
 
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.ResultRow

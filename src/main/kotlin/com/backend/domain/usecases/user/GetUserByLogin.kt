@@ -1,7 +1,7 @@
-package com.backend.domain.usecases
+package com.backend.domain.usecases.user
 
 import com.backend.data.remote.UserResponse
-import com.backend.data.user.UserDataSource
+import com.backend.data.users.UserDataSource
 import com.backend.utils.ServerResponse
 
 class GetUserByLogin(private val userDataSource: UserDataSource) {

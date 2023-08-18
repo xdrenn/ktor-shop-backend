@@ -1,6 +1,6 @@
-package com.backend.data.user
+package com.backend.data.users
 
-import com.backend.data.user.UserTable.resultRowToUser
+import com.backend.data.users.UserTable.resultRowToUser
 import com.backend.db.DatabaseFactory.dbQuery
 import com.backend.utils.ServerResponse
 import io.ktor.http.*

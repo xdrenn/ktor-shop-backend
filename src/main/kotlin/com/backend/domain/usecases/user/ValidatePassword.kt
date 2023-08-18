@@ -1,7 +1,7 @@
-package com.backend.domain.usecases
+package com.backend.domain.usecases.user
 
 import com.backend.data.remote.LoginRequest
-import com.backend.data.user.UserDTO
+import com.backend.data.users.UserDTO
 import com.backend.hash.HashingService
 import com.backend.hash.SaltedHash
 

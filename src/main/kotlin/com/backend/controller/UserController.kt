@@ -2,11 +2,11 @@ package com.backend.controller
 
 import com.backend.data.remote.LoginRequest
 import com.backend.data.remote.LoginResponse
-import com.backend.data.user.UserDTO
-import com.backend.data.user.UserDataSource
-import com.backend.domain.usecases.GetUserByLogin
-import com.backend.domain.usecases.InsertNewUser
-import com.backend.domain.usecases.ValidatePassword
+import com.backend.data.users.UserDTO
+import com.backend.data.users.UserDataSource
+import com.backend.domain.usecases.user.GetUserByLogin
+import com.backend.domain.usecases.user.InsertNewUser
+import com.backend.domain.usecases.user.ValidatePassword
 import com.backend.hash.HashingService
 import com.backend.security.TokenClaim
 import com.backend.security.TokenConfig
