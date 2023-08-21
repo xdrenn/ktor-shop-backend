@@ -4,7 +4,7 @@ import com.backend.data.remote.LoginRequest
 import com.backend.data.remote.LoginResponse
 import com.backend.data.users.UserDTO
 import com.backend.data.users.UserDataSource
-import com.backend.domain.usecases.user.GetUserByLogin
+import com.backend.domain.usecases.user.GetUserByUsername
 import com.backend.domain.usecases.user.InsertNewUser
 import com.backend.domain.usecases.user.ValidatePassword
 import com.backend.hash.HashingService
@@ -29,7 +29,7 @@ class UserController(
             return
         }
 
-        val user = GetUserByLogin(userDataSource).invoke(request.login).user
+        val user = GetUserByUsername(userDataSource).invoke(request.username).user
         if (user == null) {
             call.respond(HttpStatusCode.NotFound, "Please, sign up")
             return
@@ -61,7 +61,7 @@ class UserController(
             return
         }
 
-        val areFieldsEmpty = request.login.isBlank() || request.password.isBlank()
+        val areFieldsEmpty = request.username.isBlank() || request.password.isBlank()
         if (areFieldsEmpty) {
             call.respond(HttpStatusCode.BadRequest, "Fields must not be empty")
             return
@@ -70,7 +70,7 @@ class UserController(
         val saltedHash = hashingService.generateSaltedHash(request.password)
         InsertNewUser(userDataSource).invoke(
             UserDTO(
-                login = request.login,
+                username = request.username,
                 password = saltedHash.hash,
                 salt = saltedHash.salt
             )

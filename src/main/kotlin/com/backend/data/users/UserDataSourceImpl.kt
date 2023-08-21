@@ -9,9 +9,9 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 
 class UserDataSourceImpl : UserDataSource {
-    override suspend fun getUserByLogin(login: String): ServerResponse<UserDTO> {
+    override suspend fun getUserByUsername(username: String): ServerResponse<UserDTO> {
         val result = dbQuery {
-            UserTable.select(UserTable.login eq login).singleOrNull()
+            UserTable.select(UserTable.username eq username).singleOrNull()
         }
         return if (result == null) {
             ServerResponse.Failure(message = "User not found", statusCode = HttpStatusCode.NotFound)
@@ -23,7 +23,7 @@ class UserDataSourceImpl : UserDataSource {
         return try {
             val result = dbQuery {
                 UserTable.insert{
-                    it[login] = userDTO.login
+                    it[username] = userDTO.username
                     it[password] = userDTO.password
                     it[salt] = userDTO.salt
                 }
