@@ -42,8 +42,6 @@ dependencies {
     implementation("commons-codec:commons-codec:1.13")
 
     implementation("org.postgresql:postgresql:42.2.27")
-    implementation("io.ktor:ktor-server-auth-jvm:2.3.2")
-    implementation("io.ktor:ktor-server-auth-jwt-jvm:2.3.2")
 
     implementation("org.kodein.di:kodein-di-generic-jvm:$kodein_version")
 }
