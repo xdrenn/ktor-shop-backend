@@ -15,13 +15,15 @@ fun Application.configureRouting(
     clothesController: ClothesController
 ) {
     routing {
-        route("users") {
-            post("register") { userController.register(this.context) }
+        route("api") {
+            post("signup") { userController.register(this.context) }
             post("login") { userController.login(this.context) }
         }
-        authenticate{
-            get("clothes") {clothesController.getClothes(this.context)}
-            post("clothes/post") {clothesController.postClothes(this.context)}
+        authenticate {
+            route("api") {
+                get("clothes") { clothesController.getClothes(this.context) }
+                post("clothes/post") { clothesController.postClothes(this.context) }
+            }
         }
 
         authenticate {
