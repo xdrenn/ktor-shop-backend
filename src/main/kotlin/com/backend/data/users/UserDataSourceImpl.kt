@@ -15,14 +15,13 @@ class UserDataSourceImpl : UserDataSource {
         }
         return if (result == null) {
             ServerResponse.Failure(message = "User not found", statusCode = HttpStatusCode.NotFound)
-        }
-        else ServerResponse.Success(resultRowToUser(result))
+        } else ServerResponse.Success(resultRowToUser(result))
     }
 
     override suspend fun insertNewUser(userDTO: UserDTO): ServerResponse<Boolean> {
         return try {
             val result = dbQuery {
-                UserTable.insert{
+                UserTable.insert {
                     it[username] = userDTO.username
                     it[password] = userDTO.password
                     it[salt] = userDTO.salt
@@ -33,5 +32,12 @@ class UserDataSourceImpl : UserDataSource {
             e.printStackTrace()
             ServerResponse.Failure()
         }
+    }
+
+    override suspend fun isUsernameTaken(username: String): Boolean {
+        val result = dbQuery {
+          UserTable.select(UserTable.username eq username).singleOrNull()
+        }
+        return result == null
     }
 }

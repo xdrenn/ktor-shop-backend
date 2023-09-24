@@ -6,6 +6,7 @@ import com.backend.data.users.UserDTO
 import com.backend.data.users.UserDataSource
 import com.backend.domain.usecases.user.GetUserByUsername
 import com.backend.domain.usecases.user.InsertNewUser
+import com.backend.domain.usecases.user.NameInUseCheck
 import com.backend.domain.usecases.user.ValidatePassword
 import com.backend.hash.HashingService
 import com.backend.security.TokenClaim
@@ -67,13 +68,19 @@ class UserController(
             return
         }
 
-        val saltedHash = hashingService.generateSaltedHash(request.password)
-        InsertNewUser(userDataSource).invoke(
-            UserDTO(
-                username = request.username,
-                password = saltedHash.hash,
-                salt = saltedHash.salt
+
+        if (NameInUseCheck(userDataSource).invoke(request.username)) {
+            call.respond(HttpStatusCode.BadRequest, "Name is already in use")
+        } else {
+            val saltedHash = hashingService.generateSaltedHash(request.password)
+            InsertNewUser(userDataSource).invoke(
+                UserDTO(
+                    username = request.username,
+                    password = saltedHash.hash,
+                    salt = saltedHash.salt
+                )
             )
-        )
+            call.respond(HttpStatusCode.OK, "You've been successfully registered!")
+        }
     }
 }
