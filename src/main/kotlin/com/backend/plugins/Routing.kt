@@ -1,6 +1,6 @@
 package com.backend.plugins
 
-import com.backend.controller.ClothesController
+import com.backend.controller.GuitarsController
 import com.backend.controller.UserController
 
 import io.ktor.http.*
@@ -12,7 +12,7 @@ import io.ktor.server.response.*
 
 fun Application.configureRouting(
     userController: UserController,
-    clothesController: ClothesController
+    guitarsController: GuitarsController
 ) {
     routing {
         route("api") {
@@ -21,8 +21,8 @@ fun Application.configureRouting(
         }
         authenticate {
             route("api") {
-                get("clothes") { clothesController.getClothes(this.context) }
-                post("clothes/post") { clothesController.postClothes(this.context) }
+                get("guitar") { guitarsController.getGuitars(context) }
+                post("guitar/post") { guitarsController.postGuitar(context) }
             }
         }
 

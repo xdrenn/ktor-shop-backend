@@ -2,7 +2,7 @@ package com.backend
 
 
 import com.backend.config.ModulesConfig
-import com.backend.controller.ClothesController
+import com.backend.controller.GuitarsController
 import com.backend.controller.UserController
 import com.backend.db.DatabaseFactory
 import io.ktor.server.application.*
@@ -20,12 +20,10 @@ fun main() {
 
 fun Application.module() {
     val userController by ModulesConfig.kodein.instance<UserController>()
-    val clothesController by ModulesConfig.kodein.instance<ClothesController>()
+    val guitarsController by ModulesConfig.kodein.instance<GuitarsController>()
     val tokenConfig = TokenConfig()
 
     configureSecurity(tokenConfig)
     configureSerialization()
-    configureRouting(userController, clothesController)
-
-
+    configureRouting(userController, guitarsController)
 }
