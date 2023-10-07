@@ -27,6 +27,7 @@ class GuitarDataSourceImpl: GuitarDataSource {
                     it[image] = guitarDTO.image
                     it[color] = guitarDTO.color
                     it[description] = guitarDTO.description
+                    it[name] = guitarDTO.name
                 }
             }
             ServerResponse.Success(result.insertedCount > 0)

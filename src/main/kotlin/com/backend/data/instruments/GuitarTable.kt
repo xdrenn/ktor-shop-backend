@@ -10,7 +10,8 @@ object GuitarTable: IntIdTable("guitars") {
     val image = GuitarTable.varchar("image", 100)
     val color = GuitarTable.varchar("color", 30)
     val price = GuitarTable.varchar("price", 30)
-    val description = GuitarTable.varchar("description", 200)
+    val description = GuitarTable.varchar("description", 1000)
+    val name = GuitarTable.varchar("name", 100)
 
     fun resultRowToClothes(row: ResultRow): GuitarDTO{
         return GuitarDTO(
@@ -20,7 +21,8 @@ object GuitarTable: IntIdTable("guitars") {
             image = row[image],
             color = row[color],
             price = row[price],
-            description = row[description]
+            description = row[description],
+            name = row[name]
         )
     }
 }

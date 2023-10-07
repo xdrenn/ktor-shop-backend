@@ -10,5 +10,6 @@ data class GuitarDTO (
     val image: String,
     val price: String,
     val description: String,
-    val color: String
+    val color: String,
+    val name: String
 )

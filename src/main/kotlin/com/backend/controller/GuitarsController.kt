@@ -70,7 +70,8 @@ class GuitarsController(
                 image = request.image,
                 color = request.color,
                 price = request.price,
-                description = request.description
+                description = request.description,
+                name = request.name
             )
         )
         call.respond(HttpStatusCode.OK)

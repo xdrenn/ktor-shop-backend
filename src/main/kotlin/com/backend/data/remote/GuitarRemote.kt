@@ -10,7 +10,8 @@ data class GuitarRequest(
     val color: String,
     val image: String,
     val price: String,
-    val description: String
+    val description: String,
+    val name: String
 )
 
 @Serializable
