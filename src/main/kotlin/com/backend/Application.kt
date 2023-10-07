@@ -2,6 +2,7 @@ package com.backend
 
 
 import com.backend.config.ModulesConfig
+import com.backend.controller.AccessoriesController
 import com.backend.controller.GuitarsController
 import com.backend.controller.UserController
 import com.backend.db.DatabaseFactory
@@ -21,9 +22,10 @@ fun main() {
 fun Application.module() {
     val userController by ModulesConfig.kodein.instance<UserController>()
     val guitarsController by ModulesConfig.kodein.instance<GuitarsController>()
+    val accessoriesController by ModulesConfig.kodein.instance<AccessoriesController>()
     val tokenConfig = TokenConfig()
 
     configureSecurity(tokenConfig)
     configureSerialization()
-    configureRouting(userController, guitarsController)
+    configureRouting(userController, guitarsController, accessoriesController)
 }
