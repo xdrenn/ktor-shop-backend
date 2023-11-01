@@ -8,13 +8,37 @@ import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 
 class AccessoriesDataSourceImpl : AccessoriesDataSource {
-    override suspend fun getAccessoryByCategory(category: String): ServerResponse<AccessoriesDTO> {
+    override suspend fun getAccessoryByCategory(category: String): ServerResponse<List<AccessoriesDTO>> {
         val result = dbQuery {
-            AccessoriesTable.select(AccessoriesTable.category eq category).singleOrNull()
+            ServerResponse.Success(AccessoriesTable.select(AccessoriesTable.category eq category).map {
+                AccessoriesTable.resultRowToAccessories(it)
+            })
         }
-        return if (result == null) {
+        return if (result.data == null) {
             ServerResponse.Failure(message = "Accessory not found", statusCode = HttpStatusCode.NotFound)
-        } else ServerResponse.Success(AccessoriesTable.resultRowToAccessories(result))
+        } else result
+    }
+
+    override suspend fun getAccessoryBySubcategory(subcategory: String): ServerResponse<List<AccessoriesDTO>> {
+        val result = dbQuery {
+            ServerResponse.Success(AccessoriesTable.select(AccessoriesTable.subcategory eq subcategory).map {
+                AccessoriesTable.resultRowToAccessories(it)
+            })
+        }
+        return if (result.data == null) {
+            ServerResponse.Failure(message = "Accessory not found", statusCode = HttpStatusCode.NotFound)
+        } else result
+    }
+
+    override suspend fun getAccessoryById(id: Int): ServerResponse<List<AccessoriesDTO>> {
+        val result = dbQuery {
+            ServerResponse.Success(AccessoriesTable.select(AccessoriesTable.id eq id).map {
+                AccessoriesTable.resultRowToAccessories(it)
+            })
+        }
+        return if (result.data == null) {
+            ServerResponse.Failure(message = "Accessory not found", statusCode = HttpStatusCode.NotFound)
+        } else result
     }
 
 

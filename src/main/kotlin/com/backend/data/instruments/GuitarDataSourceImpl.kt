@@ -9,14 +9,16 @@ import org.jetbrains.exposed.sql.select
 
 class GuitarDataSourceImpl: GuitarDataSource {
 
-    override suspend fun getGuitarByCategory(category: String): ServerResponse<GuitarDTO> {
+
+    override suspend fun getGuitarByCategory(category: String): ServerResponse<List<GuitarDTO>> {
         val result = DatabaseFactory.dbQuery {
-            GuitarTable.select(GuitarTable.category eq category).singleOrNull()
+            ServerResponse.Success(GuitarTable.select(GuitarTable.category eq category).map {
+                GuitarTable.resultRowToGuitar(it)
+            })
         }
-        return if (result == null) {
+        return if (result.data == null) {
             ServerResponse.Failure(message = "Guitar not found", statusCode = HttpStatusCode.NotFound)
-        }
-        else ServerResponse.Success(GuitarTable.resultRowToClothes(result))
+        } else result
     }
 
     override suspend fun insertNewGuitar(guitarDTO: GuitarDTO): ServerResponse<Boolean> {
@@ -24,8 +26,10 @@ class GuitarDataSourceImpl: GuitarDataSource {
             val result = DatabaseFactory.dbQuery {
                 GuitarTable.insert {
                     it[category] = guitarDTO.category
+                    it[brand] = guitarDTO.brand
                     it[image] = guitarDTO.image
                     it[color] = guitarDTO.color
+                    it[price] = guitarDTO.price
                     it[description] = guitarDTO.description
                     it[name] = guitarDTO.name
                 }
@@ -37,13 +41,25 @@ class GuitarDataSourceImpl: GuitarDataSource {
         }
     }
 
-    override suspend fun getGuitarByBrand(brand: String): ServerResponse<GuitarDTO> {
+    override suspend fun getGuitarByBrand(brand: String): ServerResponse<List<GuitarDTO>> {
         val result = DatabaseFactory.dbQuery {
-            GuitarTable.select(GuitarTable.brand eq brand).singleOrNull()
+            ServerResponse.Success(GuitarTable.select(GuitarTable.brand eq brand).map {
+                GuitarTable.resultRowToGuitar(it)
+            })
         }
-        return if (result == null) {
+        return if (result.data == null) {
             ServerResponse.Failure(message = "Guitar not found", statusCode = HttpStatusCode.NotFound)
+        } else result
+    }
+
+    override suspend fun getGuitarById(id: Int): ServerResponse<List<GuitarDTO>> {
+        val result = DatabaseFactory.dbQuery {
+            ServerResponse.Success(GuitarTable.select(GuitarTable.id eq id).map {
+                GuitarTable.resultRowToGuitar(it)
+            })
         }
-        else ServerResponse.Success(GuitarTable.resultRowToClothes(result))
+        return if (result.data == null) {
+            ServerResponse.Failure(message = "Guitar not found", statusCode = HttpStatusCode.NotFound)
+        } else result
     }
 }

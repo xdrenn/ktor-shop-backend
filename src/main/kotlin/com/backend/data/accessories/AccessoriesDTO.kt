@@ -6,8 +6,9 @@ import kotlinx.serialization.Serializable
 data class AccessoriesDTO (
     val id: Int = 0,
     val category: String,
-    val price: String,
+    val price: Double,
     val description: String,
     val image: String,
-    val name: String
+    val name: String,
+    val subcategory: String
 )
