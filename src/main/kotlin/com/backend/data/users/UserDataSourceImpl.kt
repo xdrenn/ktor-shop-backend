@@ -5,6 +5,7 @@ import com.backend.db.DatabaseFactory.dbQuery
 import com.backend.utils.ServerResponse
 import io.ktor.http.*
 import org.jetbrains.exposed.sql.SqlExpressionBuilder.eq
+import org.jetbrains.exposed.sql.deleteWhere
 import org.jetbrains.exposed.sql.insert
 import org.jetbrains.exposed.sql.select
 
@@ -39,5 +40,17 @@ class UserDataSourceImpl : UserDataSource {
           UserTable.select(UserTable.username eq username).singleOrNull()
         }
         return result == null
+    }
+
+    override suspend fun deleteUser(id: Int): ServerResponse<Boolean> {
+        return try {
+            dbQuery {
+                UserTable.deleteWhere { UserTable.id eq id }
+            }
+            ServerResponse.Success()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ServerResponse.Failure()
+        }
     }
 }

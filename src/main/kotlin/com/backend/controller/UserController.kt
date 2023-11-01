@@ -1,17 +1,17 @@
 package com.backend.controller
 
+import com.backend.data.remote.DeleteRequest
 import com.backend.data.remote.LoginRequest
 import com.backend.data.remote.LoginResponse
+import com.backend.data.remote.UserResponse
 import com.backend.data.users.UserDTO
 import com.backend.data.users.UserDataSource
-import com.backend.domain.usecases.user.GetUserByUsername
-import com.backend.domain.usecases.user.InsertNewUser
-import com.backend.domain.usecases.user.NameInUseCheck
-import com.backend.domain.usecases.user.ValidatePassword
+import com.backend.domain.usecases.user.*
 import com.backend.hash.HashingService
 import com.backend.security.TokenClaim
 import com.backend.security.TokenConfig
 import com.backend.security.TokenService
+import com.backend.utils.ServerResponse
 import io.ktor.http.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
@@ -82,5 +82,38 @@ class UserController(
             )
             call.respond(HttpStatusCode.OK, "You've been successfully registered!")
         }
+    }
+
+    suspend fun getUser(call: ApplicationCall){
+        val request = call.receiveNullable<LoginRequest>() ?: kotlin.run {
+            call.respond(HttpStatusCode.BadRequest)
+            return
+        }
+
+        val user = GetUserByUsername(userDataSource).invoke(request.username).user
+        if (user == null) {
+            call.respond(HttpStatusCode.NotFound, "Please, sign up")
+            return
+        }
+
+        call.respond(
+            status = HttpStatusCode.OK,
+            message = UserResponse(
+                user = user
+            )
+        )
+    }
+
+    suspend fun deleteUser(call: ApplicationCall){
+        val request = call.receiveNullable<DeleteRequest>() ?: kotlin.run {
+            call.respond(HttpStatusCode.BadRequest)
+            return
+        }
+
+        val delete = DeleteUser(userDataSource).invoke(request.id)
+        if(delete == ServerResponse.Failure()){
+            call.respond(HttpStatusCode.BadRequest)
+        }
+        call.respond(HttpStatusCode.OK, "Account has been deleted")
     }
 }

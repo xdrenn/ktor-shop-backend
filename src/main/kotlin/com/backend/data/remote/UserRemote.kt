@@ -17,3 +17,6 @@ data class LoginResponse(
 
 @Serializable
 data class UserResponse(val user: UserDTO?)
+
+@Serializable
+data class DeleteRequest(val id: Int)
