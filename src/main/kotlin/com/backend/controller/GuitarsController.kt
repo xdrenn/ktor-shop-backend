@@ -2,11 +2,10 @@ package com.backend.controller
 
 import com.backend.data.instruments.GuitarDTO
 import com.backend.data.instruments.GuitarDataSource
-import com.backend.data.remote.Guitar
-import com.backend.data.remote.GuitarRequest
-import com.backend.data.remote.GuitarResponse
+import com.backend.data.remote.*
 import com.backend.domain.usecases.guitar.GetGuitarByBrand
 import com.backend.domain.usecases.guitar.GetGuitarByCategory
+import com.backend.domain.usecases.guitar.GetGuitarById
 import com.backend.domain.usecases.guitar.InsertNewGuitar
 import io.ktor.http.*
 import io.ktor.server.application.*
@@ -16,39 +15,69 @@ import io.ktor.server.response.*
 class GuitarsController(
     private val guitarDataSource: GuitarDataSource
 ) {
-    suspend fun getGuitars(call: ApplicationCall) {
+    suspend fun getGuitarByCategory(call: ApplicationCall) {
 
-        val request = call.receiveNullable<Guitar>() ?: kotlin.run {
+        val request = call.receiveNullable<GuitarCategory>() ?: kotlin.run {
             call.respond(HttpStatusCode.BadRequest)
             return
         }
 
-        val guitarByCategory = GetGuitarByCategory(guitarDataSource).invoke(request.category).guitar
-        if (guitarByCategory == null) {
-            call.respond(HttpStatusCode.NotFound, "Guitar not found")
+        val guitar = GetGuitarByCategory(guitarDataSource).invoke(request.category).guitar
+        if (guitar == null) {
+            call.respond(HttpStatusCode.NotFound, "Guitars not found")
             return
         }
 
         call.respond(
             status = HttpStatusCode.OK,
             message = GuitarResponse(
-                guitar = guitarByCategory
-            )
-        )
-
-        val guitarByBrand = GetGuitarByBrand(guitarDataSource).invoke(request.brand).guitar
-        if (guitarByBrand == null) {
-            call.respond(HttpStatusCode.NotFound, "Guitar not found")
-            return
-        }
-
-        call.respond(
-            status = HttpStatusCode.OK,
-            message = GuitarResponse(
-                guitar = guitarByCategory
+                guitar = guitar
             )
         )
     }
+
+    suspend fun getGuitarByBrand(call: ApplicationCall) {
+
+        val request = call.receiveNullable<GuitarBrand>() ?: kotlin.run {
+            call.respond(HttpStatusCode.BadRequest)
+            return
+        }
+
+        val guitar = GetGuitarByBrand(guitarDataSource).invoke(request.brand).guitar
+        if (guitar == null) {
+            call.respond(HttpStatusCode.NotFound, "Guitars not found")
+            return
+        }
+
+        call.respond(
+            status = HttpStatusCode.OK,
+            message = GuitarResponse(
+                guitar = guitar
+            )
+        )
+    }
+
+    suspend fun getGuitarById(call: ApplicationCall){
+
+        val request = call.receiveNullable<GuitarId>() ?: kotlin.run {
+            call.respond(HttpStatusCode.BadRequest)
+            return
+        }
+
+        val guitar = GetGuitarById(guitarDataSource).invoke(request.id).guitar
+        if (guitar == null) {
+            call.respond(HttpStatusCode.NotFound, "Guitars not found")
+            return
+        }
+
+        call.respond(
+            status = HttpStatusCode.OK,
+            message = GuitarResponse(
+                guitar = guitar
+            )
+        )
+    }
+
 
     suspend fun postGuitar(call: ApplicationCall) {
         val request = call.receiveNullable<GuitarRequest>() ?: kotlin.run {
