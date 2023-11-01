@@ -20,15 +20,29 @@ fun Application.configureRouting(
         route("api") {
             post("signup") { userController.register(this.context) }
             post("login") { userController.login(this.context) }
+            post("user") { userController.getUser(this.context)}
         }
         authenticate {
             route("api") {
-                get("guitars") {
-                    guitarsController.getGuitars(this.context)
+                post("delete") { userController.deleteUser(this.context) }
+                post("guitar/category") {
+                    guitarsController.getGuitarByCategory(this.context)
                 }
-                post("guitar/post") { guitarsController.postGuitar(this.context)}
-                get("accessories"){
-                    accessoriesController.getAccessory(this.context)
+                post("guitar/brand") {
+                    guitarsController.getGuitarByBrand(this.context)
+                }
+                post("guitar/post") { guitarsController.postGuitar(this.context) }
+
+                post("guitar/id") { guitarsController.getGuitarById(this.context) }
+
+                post("accessory/category") {
+                    accessoriesController.getAccessoryByCategory(this.context)
+                }
+                post("accessory/subcategory") {
+                    accessoriesController.getAccessoryBySubcategory(this.context)
+                }
+                post("accessory/id"){
+                    accessoriesController.getAccessoryById(this.context)
                 }
                 post("accessory/post") {
                     accessoriesController.postAccessory(this.context)
