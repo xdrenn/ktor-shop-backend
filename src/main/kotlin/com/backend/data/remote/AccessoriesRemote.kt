@@ -7,16 +7,26 @@ import kotlinx.serialization.Serializable
 data class AccessoryRequest(
     val category: String,
     val image: String,
-    val price: String,
+    val price: Double,
     val description: String,
-    val name: String
+    val name: String,
+    val subcategory: String
 )
 
 @Serializable
-data class Accessory(
+data class AccessoryByCategory(
     val category: String
+)
+
+@Serializable
+data class AccessoryBySubcategory(
+    val subcategory: String
+)
+@Serializable
+data class AccessoryById(
+    val id: Int
 )
 @Serializable
 data class AccessoryResponse(
-    val accessory: AccessoriesDTO?
+    val accessory: List<AccessoriesDTO?>?
 )

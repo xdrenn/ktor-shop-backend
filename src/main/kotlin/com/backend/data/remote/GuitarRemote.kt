@@ -9,18 +9,26 @@ data class GuitarRequest(
     val brand: String,
     val color: String,
     val image: String,
-    val price: String,
+    val price: Double,
     val description: String,
     val name: String
 )
 
 @Serializable
-data class Guitar(
+data class GuitarCategory(
     val category: String,
-    val brand: String
 )
 
 @Serializable
+data class GuitarBrand(
+    val brand: String
+)
+@Serializable
 data class GuitarResponse(
-    val guitar: GuitarDTO?
+    val guitar: List<GuitarDTO?>?
+)
+
+@Serializable
+data class GuitarId(
+    val id: Int
 )

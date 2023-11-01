@@ -7,10 +7,11 @@ import org.jetbrains.exposed.sql.ResultRow
 
 object AccessoriesTable: IntIdTable("accessories") {
     val category = AccessoriesTable.varchar("category", 30)
-    val price = AccessoriesTable.varchar("price", 30)
-    val description = AccessoriesTable.varchar("description", 1000)
+    val price = AccessoriesTable.double("price")
+    val description = AccessoriesTable.varchar("description", 5000)
     val image = AccessoriesTable.varchar("image", 100)
     val name = AccessoriesTable.varchar("name", 100)
+    val subcategory = AccessoriesTable.varchar("subcategory", 30)
 
     fun resultRowToAccessories(row: ResultRow): AccessoriesDTO {
         return AccessoriesDTO(
@@ -19,7 +20,8 @@ object AccessoriesTable: IntIdTable("accessories") {
             price = row[price],
             description = row[description],
             image = row[image],
-            name = row[name]
+            name = row[name],
+            subcategory = row[subcategory]
         )
     }
 }
