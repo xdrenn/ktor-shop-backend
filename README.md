@@ -1,5 +1,5 @@
 # ktor-shop-backend
-Ktor backend uploaded to [hosting](https://render.com/) built with
+Ktor бэкенд загруженный на [хостинг](https://render.com/) постороенный с
 + Exposed
 + PostgreSQL
 + Kodein
